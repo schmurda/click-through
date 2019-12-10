@@ -12,16 +12,27 @@ namespace ClickThrough
     public class WindowManager
     {
         private const int GWL_EXSTYLE           = -20;
-        private const int WS_EX_LAYERED         = 0x80000;
-        private const int WS_EX_TRANSPARENT     = 0x20;
+
+        private const long WS_CAPTION           = 0x00C00000L;
+        private const long WS_THICKFRAME        = 0x00040000L;
+        private const long WS_MINIMIZEBOX       = 0x00020000L;
+        private const long WS_MAXIMIZEBOX       = 0x00010000L;
+        private const long WS_SYSMENU           = 0x00080000L;
+
+        private const long WS_EX_DLGMODALFRAME  = 0x00000001L;
+        private const long WS_EX_CLIENTEDGE     = 0x00000200L;
+        private const long WS_EX_STATICEDGE     = 0x00020000L;
+        private const long WS_EX_LAYERED        = 0x00080000L;
+        private const long WS_EX_TRANSPARENT    = 0x00000020L;
+
         private const int LWA_ALPHA             = 0x2;
 
         private IntPtr _window;
+        private WindowPosition _pos;
         private bool _enabled = true;
         private uint _initialStyle;
         private uint _disabledStyle;
         private bool _transparent;
-        private WindowPosition _pos;
 
         public WindowManager(GlobalEvents events)
         {
@@ -30,21 +41,33 @@ namespace ClickThrough
 
         public void SelectCurrentWindow()
         {
+            Reset();
             _window = GetForegroundWindow();
-            _enabled = true;
-            _transparent = false;
             _initialStyle = (uint) GetWindowLong(_window, GWL_EXSTYLE);
-            _disabledStyle = _initialStyle | WS_EX_LAYERED | WS_EX_TRANSPARENT;
+            _disabledStyle = (uint) (_initialStyle | WS_EX_LAYERED | WS_EX_TRANSPARENT);
         }
 
         public void SetWindowPosition(WindowPosition pos)
         {
+            if (_window == IntPtr.Zero)
+            {
+                return;
+            }
+
             _pos = pos;
-            SetWindowPos(_window, new IntPtr(-1), pos.X, pos.Y, pos.Width, pos.Height, 0);
+            if (!SetWindowPos(_window, new IntPtr(-1), pos.X, pos.Y, pos.Width, pos.Height, 0))
+            {
+                Reset();
+            }
         }
 
         public void ToggleEnabled()
         {
+            if (_window == IntPtr.Zero)
+            {
+                return;
+            }
+
             _enabled = !_enabled;
             EnableWindow(_window, _enabled);
             SetWindowLong(_window, GWL_EXSTYLE, _enabled ? _initialStyle : _disabledStyle);
@@ -52,6 +75,11 @@ namespace ClickThrough
 
         private void OnMouseMove(int x, int y)
         {
+            if (_window == IntPtr.Zero)
+            {
+                return;
+            }
+
             if (WindowPosition.Intersect(_pos, x, y) && !_transparent)
             {
                 _transparent = true;
@@ -62,6 +90,15 @@ namespace ClickThrough
                 _transparent = false;
                 SetLayeredWindowAttributes(_window, 0, 255, LWA_ALPHA);
             }
+        }
+
+        private void Reset()
+        {
+            _window = IntPtr.Zero;
+            _enabled = true;
+            _initialStyle = 0;
+            _disabledStyle = 0;
+            _transparent = false;
         }
 
         [DllImport("user32.dll")]
