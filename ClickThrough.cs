@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -23,6 +24,8 @@ namespace ClickThrough
         private bool _setRightKeyCombo;
         private Keys _rightCombo = Keys.F10 | Keys.Control;
 
+        private readonly Settings _settings = new Settings();
+
         public ClickThrough()
         {
             InitializeComponent();
@@ -36,48 +39,50 @@ namespace ClickThrough
             btnLeftWindow.Text = "Left Window: " + _leftCombo;
             btnRightWindow.Text = "Right Window: " + _rightCombo;
             
-            _eventManager.OnKeyDown += OnKeyDown;
-            _eventManager.Listen();
+            //_eventManager.OnKeyDown += OnKeyDown;
+            //_eventManager.Listen();
+
+            pgShortcuts.SelectedObject = _settings;
         }
 
         private void OnKeyDown(Keys key)
         {
-            if (_setSelectKeyCombo)
-            {
-                _selectCombo = key;
-                btnSelectShortcut.Text = "Save Shortcut: " + _selectCombo;
-            }
-            else if (_setEnableKeyCombo)
-            {
-                _enableCombo = key;
-                btnEnableShortcut.Text = "Save Shortcut: " + _enableCombo;
-            }
-            else if (_setLeftKeyCombo)
-            {
-                _leftCombo = key;
-                btnLeftWindow.Text = "Save Shortcut: " + _leftCombo;
-            }
-            else if (_setRightKeyCombo)
-            {
-                _rightCombo = key;
-                btnRightWindow.Text = "Save Shortcut: " + _rightCombo;
-            }
-            else if (key == _selectCombo)
-            {
-                _winManager.SelectCurrentWindow();
-            }
-            else if (key == _enableCombo)
-            {
-                _winManager.ToggleEnabled();
-            }
-            else if (key == _leftCombo)
-            {
-                _winManager.SetWindowPosition(WindowPosition.LeftMonitor);
-            }
-            else if (key == _rightCombo)
-            {
-                _winManager.SetWindowPosition(WindowPosition.RightMonitor);
-            }
+            //if (_setSelectKeyCombo)
+            //{
+            //    _selectCombo = key;
+            //    btnSelectShortcut.Text = "Save Shortcut: " + _selectCombo;
+            //}
+            //else if (_setEnableKeyCombo)
+            //{
+            //    _enableCombo = key;
+            //    btnEnableShortcut.Text = "Save Shortcut: " + _enableCombo;
+            //}
+            //else if (_setLeftKeyCombo)
+            //{
+            //    _leftCombo = key;
+            //    btnLeftWindow.Text = "Save Shortcut: " + _leftCombo;
+            //}
+            //else if (_setRightKeyCombo)
+            //{
+            //    _rightCombo = key;
+            //    btnRightWindow.Text = "Save Shortcut: " + _rightCombo;
+            //}
+            //else if (key == _selectCombo)
+            //{
+            //    _winManager.SelectCurrentWindow();
+            //}
+            //else if (key == _enableCombo)
+            //{
+            //    _winManager.ToggleEnabled();
+            //}
+            //else if (key == _leftCombo)
+            //{
+            //    _winManager.SetWindowPosition(WindowPosition.LeftMonitor);
+            //}
+            //else if (key == _rightCombo)
+            //{
+            //    _winManager.SetWindowPosition(WindowPosition.RightMonitor);
+            //}
         }
 
         private void ClearSetShortcuts()

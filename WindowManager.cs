@@ -13,17 +13,18 @@ namespace ClickThrough
     {
         private const int GWL_EXSTYLE           = -20;
 
-        private const long WS_CAPTION           = 0x00C00000L;
-        private const long WS_THICKFRAME        = 0x00040000L;
-        private const long WS_MINIMIZEBOX       = 0x00020000L;
-        private const long WS_MAXIMIZEBOX       = 0x00010000L;
-        private const long WS_SYSMENU           = 0x00080000L;
+        //private const long WS_CAPTION           = 0x00C00000L;
+        //private const long WS_THICKFRAME        = 0x00040000L;
+        //private const long WS_MINIMIZEBOX       = 0x00020000L;
+        //private const long WS_MAXIMIZEBOX       = 0x00010000L;
+        //private const long WS_SYSMENU           = 0x00080000L;
 
-        private const long WS_EX_DLGMODALFRAME  = 0x00000001L;
-        private const long WS_EX_CLIENTEDGE     = 0x00000200L;
-        private const long WS_EX_STATICEDGE     = 0x00020000L;
-        private const long WS_EX_LAYERED        = 0x00080000L;
-        private const long WS_EX_TRANSPARENT    = 0x00000020L;
+        //private const long WS_EX_DLGMODALFRAME  = 0x00000001L;
+        //private const long WS_EX_CLIENTEDGE     = 0x00000200L;
+        //private const long WS_EX_STATICEDGE     = 0x00020000L;
+
+        private const int WS_EX_LAYERED        = 0x80000;
+        private const int WS_EX_TRANSPARENT    = 0x20;
 
         private const int LWA_ALPHA             = 0x2;
 
@@ -44,7 +45,7 @@ namespace ClickThrough
             Reset();
             _window = GetForegroundWindow();
             _initialStyle = (uint) GetWindowLong(_window, GWL_EXSTYLE);
-            _disabledStyle = (uint) (_initialStyle | WS_EX_LAYERED | WS_EX_TRANSPARENT);
+            _disabledStyle = _initialStyle | WS_EX_LAYERED | WS_EX_TRANSPARENT;
         }
 
         public void SetWindowPosition(WindowPosition pos)
@@ -55,10 +56,7 @@ namespace ClickThrough
             }
 
             _pos = pos;
-            if (!SetWindowPos(_window, new IntPtr(-1), pos.X, pos.Y, pos.Width, pos.Height, 0))
-            {
-                Reset();
-            }
+            SetWindowPos(_window, new IntPtr(-1), pos.Location.X, pos.Location.Y, pos.Size.Width, pos.Size.Height, 0);
         }
 
         public void ToggleEnabled()

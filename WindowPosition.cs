@@ -1,37 +1,31 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Drawing;
+using System.Drawing.Design;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace ClickThrough
 {
-    public struct WindowPosition
+    [Editor(typeof(WindowPositionEditor), typeof(UITypeEditor))]
+    public class WindowPosition
     {
-        public static WindowPosition LeftMonitor = new WindowPosition
-        {
-            X = -493,
-            Y = 747,
-            Width = 500,
-            Height = 300
-        };
-
-        public static WindowPosition RightMonitor = new WindowPosition
-        {
-            X = 1913,
-            Y = 747,
-            Width = 500,
-            Height = 500
-        };
-
-        public int X;
-        public int Y;
-        public int Width;
-        public int Height;
+        public Point Location { get; set; }
+        public Size Size { get; set; }
 
         public static bool Intersect(WindowPosition pos, int x, int y)
         {
-            return x >= pos.X && x <= pos.X + pos.Width && y >= pos.Y && y <= pos.Y + pos.Height;
+            return x >= pos.Location.X 
+                   && x <= pos.Location.X + pos.Size.Width 
+                   && y >= pos.Location.Y 
+                   && y <= pos.Location.Y + pos.Size.Height;
+        }
+
+        public override string ToString()
+        {
+            return string.Format("{0} {1}", Location, Size);
         }
     }
 }

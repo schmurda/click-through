@@ -32,6 +32,7 @@
             this.btnEnableShortcut = new System.Windows.Forms.Button();
             this.btnLeftWindow = new System.Windows.Forms.Button();
             this.btnRightWindow = new System.Windows.Forms.Button();
+            this.pgShortcuts = new System.Windows.Forms.PropertyGrid();
             this.SuspendLayout();
             // 
             // btnSelectShortcut
@@ -74,11 +75,20 @@
             this.btnRightWindow.UseVisualStyleBackColor = true;
             this.btnRightWindow.Click += new System.EventHandler(this.btnRightWindow_Click);
             // 
+            // pgShortcuts
+            // 
+            this.pgShortcuts.Location = new System.Drawing.Point(12, 128);
+            this.pgShortcuts.Name = "pgShortcuts";
+            this.pgShortcuts.Size = new System.Drawing.Size(256, 193);
+            this.pgShortcuts.TabIndex = 7;
+            this.pgShortcuts.ToolbarVisible = false;
+            // 
             // ClickThrough
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(280, 132);
+            this.ClientSize = new System.Drawing.Size(280, 333);
+            this.Controls.Add(this.pgShortcuts);
             this.Controls.Add(this.btnRightWindow);
             this.Controls.Add(this.btnLeftWindow);
             this.Controls.Add(this.btnEnableShortcut);
@@ -95,6 +105,7 @@
         private System.Windows.Forms.Button btnEnableShortcut;
         private System.Windows.Forms.Button btnLeftWindow;
         private System.Windows.Forms.Button btnRightWindow;
+        private System.Windows.Forms.PropertyGrid pgShortcuts;
     }
 }
 
