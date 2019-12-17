@@ -73,7 +73,7 @@ namespace ClickThrough
 
         private void OnMouseMove(int x, int y)
         {
-            if (_window == IntPtr.Zero)
+            if (_window == IntPtr.Zero || _enabled)
             {
                 return;
             }
